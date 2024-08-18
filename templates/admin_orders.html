@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>All Orders</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User</th>
+            <th>Date</th>
+            <th>Total Price</th>
+            <th>Detail</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.user.username }}</td>
+            <td>{{ order.date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ order.total_amount | rupiah(with_prefix=True) }}</td>
+            <td><a href="{{ url_for('admin_order_details', order_id=order.id) }}" class="btn btn-primary">View Details</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

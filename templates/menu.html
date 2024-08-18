@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Menu</h2>
+
+{% if message %}
+    <div class="alert alert-info" role="alert">
+        {{ message }}
+        {% if receipt_url %}
+            <a href="{{ receipt_url }}" class="btn btn-success">Print Receipt</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.price|rupiah(with_prefix=True) }}</td>
+            <td>
+                <form method="post" action="{{ url_for('menu') }}" onsubmit="return confirmPurchase(this);">
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <input type="number" name="quantity" min="1" placeholder="Quantity" required>
+                    <input type="hidden" name="confirm" value="no" id="confirm_input">
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    function confirmPurchase(form) {
+        if (confirm("Are you sure you want to buy this item?")) {
+            form.confirm.value = 'yes';
+        } else {
+            form.confirm.value = 'no';
+        }
+        return true;
+    }
+</script>
+{% endblock %}

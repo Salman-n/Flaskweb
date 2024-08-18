@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .details {
+            margin-bottom: 20px;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        .items {
+            margin-top: 20px;
+        }
+        .items table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .items table, .items th, .items td {
+            border: 1px solid #ddd;
+        }
+        .items th, .items td {
+            padding: 10px;
+            text-align: left;
+        }
+        .items th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .footer a {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Receipt</h1>
+        <div class="details">
+            <p><strong>Order ID:</strong> {{ order.id }}</p>
+            <p><strong>Order Date:</strong> {{ order.date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <p><strong>Total Amount:</strong> {{ order.total_amount | rupiah(with_prefix=True) }}</p>
+        </div>
+        <div class="items">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <td>{{ item.menu_item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price | rupiah }}</td>
+                        <td>{{ item.total() | rupiah }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="total">
+            <p><strong>Grand Total:</strong> {{ order.total_amount | rupiah(with_prefix=True) }}</p>
+        </div>
+    </div>
+</body>
+</html>

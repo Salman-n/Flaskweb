@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Checkout</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for purchase in purchases %}
+        <tr>
+            <td>{{ purchase.item.name }}</td>
+            <td>{{ purchase.quantity }}</td>
+            <td>${{ purchase.item.price }}</td>
+            <td>${{ purchase.quantity * purchase.item.price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
